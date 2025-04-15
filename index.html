@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pay Now</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="modal">
+    <form id="paymentForm" class="form">
+      <h2>Pay Now</h2>
+      
+      <div class="input_container">
+        <label class="input_label">Votre Email</label>
+        <input type="email" id="email" class="input_field" required />
+      </div>
+
+      <div class="input_container">
+        <label class="input_label">Montant ($)</label>
+        <input type="number" id="amount" class="input_field" required />
+      </div>
+
+      <button class="purchase--btn" type="submit">Payer</button>
+    </form>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
