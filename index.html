@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intégration API TikAPI</title>
+</head>
+<body>
+    <h1>Vidéos TikTok avec TikAPI</h1>
+    <div id="videos-container"></div>
+
+    <script>
+        // API URL de TikAPI (exemple pour récupérer des vidéos tendances)
+        const apiUrl = 'https://api.tikapi.io/v1/tiktok/trending';
+        
+        // Ta clé API ici
+        const apiKey = 'kcfwJyss9ckTO2iY34szy7Qg79GXFP0fEw';
+        
+        // Fonction pour récupérer et afficher les vidéos
+        async function fetchVideos() {
+            const response = await fetch(apiUrl, {
+                headers: {
+                    'Authorization': `Bearer ${apiKey}`
+                }
+            });
+            
+            const data = await response.json();
+            console.log(data);
+            
+            // Afficher les vidéos sur la page
+            const videosContainer = document.getElementById('videos-container');
+            data.items.forEach(item => {
+                const videoElement = document.createElement('div');
+                videoElement.innerHTML = `
+                    <h2>${item.title}</h2>
+                    <video controls>
+                        <source src="${item.video_url}" type="video/mp4">
+                    </video>
+                    <p>Posté par: ${item.author.nickname}</p>
+                `;
+                videosContainer.appendChild(videoElement);
+            });
+        }
+
+        // Appeler la fonction pour récupérer et afficher les vidéos
+        fetchVideos();
+    </script>
+</body>
+</html>
