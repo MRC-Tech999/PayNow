@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vidéos TikTok - TikAPI</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            margin-top: 30px;
+        }
+        .video-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .video {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            width: 300px;
+            text-align: center;
+        }
+        video {
+            max-width: 100%;
+            border-radius: 10px;
+        }
+        .title {
+            font-size: 18px;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        .author {
+            font-size: 14px;
+            margin-top: 5px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <h1>Vidéos Populaires sur TikTok</h1>
+    <div id="videos-container" class="video-container"></div>
+
+    <script>
+        const apiUrl = 'https://api.tikapi.io/v1/tiktok/trending';
+        const apiKey = 'kcfwJyss9ckTO2iY34szy7Qg79GXFP0fEw';  // Ta clé API TikAPI
+
+        async function fetchVideos() {
+            const response = await fetch(apiUrl, {
+                headers: {
+                    'Authorization': `Bearer ${apiKey}`
+                }
+            });
+            const data = await response.json();
+
+            const videosContainer = document.getElementById('videos-container');
+            videosContainer.innerHTML = '';  // Vide le conteneur avant d'ajouter les nouvelles vidéos
+
+            data.items.forEach(item => {
+                const videoElement = document.createElement('div');
+                videoElement.classList.add('video');
+                videoElement.innerHTML = `
+                    <h2 class="title">${item.title}</h2>
+                    <video controls>
+                        <source src="${item.video_url}" type="video/mp4">
+                    </video>
+                    <p class="author">Posté par: ${item.author.nickname}</p>
+                `;
+                videosContainer.appendChild(videoElement);
+            });
+        }
+
+        // Appeler la fonction pour récupérer et afficher les vidéos
+        fetchVideos();
+    </script>
+</body>
+</html>
