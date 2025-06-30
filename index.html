@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Envoyer une Publication à TikTok</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            margin-top: 30px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin-top: 20px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        .message {
+            color: green;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+        .error-message {
+            color: red;
+            font-size: 18px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Envoyer une Publication sur TikTok</h1>
+    <button id="sendPostButton">Envoyer Publication</button>
+    <div id="message" class="message"></div>
+    <div id="error-message" class="error-message"></div>
+
+    <script>
+        document.getElementById('sendPostButton').addEventListener('click', async () => {
+            const apiKey = '92C1CABC-8762488B-BF73548E-310DE278';  // Remplace par ta clé API
+            const apiUrl = 'https://api.ayrshare.com/api/post';
+            
+            const postData = {
+                post: 'Today is a great day!',
+                platforms: ['tiktok'],
+                mediaUrls: ['https://img.ayrshare.com/012/gb.jpg']
+            };
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${apiKey}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(postData)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Erreur lors de l\'envoi de la publication');
+                }
+
+                const data = await response.json();
+                if (data.status === 'success') {
+                    document.getElementById('message').textContent = 'Publication envoyée avec succès sur TikTok !';
+                    document.getElementById('error-message').textContent = '';
+                } else {
+                    throw new Error('Échec de l\'envoi de la publication');
+                }
+            } catch (error) {
+                console.error(error);
+                document.getElementById('error-message').textContent = error.message;
+                document.getElementById('message').textContent = '';
+            }
+        });
+    </script>
+</body>
+</html>
