@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Téléchargeur GitHub Privé</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: white;
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      text-align: center;
+    }
+    input, button {
+      padding: 12px;
+      margin: 10px;
+      width: 80%;
+      max-width: 500px;
+      border-radius: 5px;
+      border: none;
+      font-size: 16px;
+    }
+    input {
+      background: #2c2c2c;
+      color: white;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+    #message {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🔐 Téléchargement GitHub Privé</h1>
+  <p>Entrez un lien GitHub privé (ex : https://github.com/user/repo)</p>
+  <input type="text" id="repoUrl" value="https://github.com/jionnirithvik/Shizzbot" />
+  <button onclick="download()">Télécharger le ZIP</button>
+  <div id="message"></div>
+
+  <script>
+    async function download() {
+      const repoUrl = document.getElementById("repoUrl").value;
+      const message = document.getElementById("message");
+      message.innerHTML = "⏳ Téléchargement en cours...";
+
+      try {
+        const res = await fetch('/download', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ url: repoUrl })
+        });
+
+        if (!res.ok) throw new Error('Erreur réseau');
+
+        const blob = await res.blob();
+        const link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = 'repo.zip';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        message.innerHTML = "✅ ZIP téléchargé avec succès !";
+      } catch (err) {
+        message.innerHTML = "❌ Échec : " + err.message;
+      }
+    }
+  </script>
+</body>
+</html>
